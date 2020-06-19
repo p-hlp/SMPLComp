@@ -5,7 +5,7 @@
 <img src="https://github.com/p-hlp/SMPLComp/blob/master/SMPLComp_Snip.png"  width="60%" height="60%">
 
 ## Introduction
-This is a simplified version of the CTAGDRC plugin.
+This is a simplified version of the [CTAGDRC](https://github.com/p-hlp/CTAGDRC) plugin.
 
 ## Features
 - Input Gain
