@@ -15,7 +15,7 @@
 //==============================================================================
 /**
 */
-class SmplcompAudioProcessor  : public AudioProcessor
+class SmplcompAudioProcessor  : public AudioProcessor, public AudioProcessorValueTreeState::Listener
 {
 public:
     //==============================================================================
@@ -55,7 +55,17 @@ public:
     void getStateInformation (MemoryBlock& destData) override;
     void setStateInformation (const void* data, int sizeInBytes) override;
 
+    void parameterChanged(const String& parameterID, float newValue) override;
+    AudioProcessorValueTreeState::ParameterLayout createParameterLayout();
+
+    //==============================================================================
+    Atomic<float> gainReduction;
+    Atomic<float> currentInput;
+    Atomic<float> currentOutput;
+
 private:
     //==============================================================================
+    AudioProcessorValueTreeState parameters;
+
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (SmplcompAudioProcessor)
 };

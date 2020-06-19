@@ -21,7 +21,7 @@ SmplcompAudioProcessor::SmplcompAudioProcessor()
                       #endif
                        .withOutput ("Output", AudioChannelSet::stereo(), true)
                      #endif
-                       )
+                       ), parameters(*this, nullptr, "PARAMETERS", createParameterLayout())
 #endif
 {
 }
@@ -166,7 +166,7 @@ bool SmplcompAudioProcessor::hasEditor() const
 
 AudioProcessorEditor* SmplcompAudioProcessor::createEditor()
 {
-    return new SmplcompAudioProcessorEditor (*this);
+    return new SmplcompAudioProcessorEditor (*this, parameters);
 }
 
 //==============================================================================
@@ -188,4 +188,15 @@ void SmplcompAudioProcessor::setStateInformation (const void* data, int sizeInBy
 AudioProcessor* JUCE_CALLTYPE createPluginFilter()
 {
     return new SmplcompAudioProcessor();
+}
+
+void SmplcompAudioProcessor::parameterChanged(const String& parameterID, float newValue)
+{
+}
+
+AudioProcessorValueTreeState::ParameterLayout SmplcompAudioProcessor::createParameterLayout()
+{
+    std::vector<std::unique_ptr<RangedAudioParameter>> params;
+
+    return { params.begin(), params.end() };
 }

@@ -3,6 +3,9 @@
 <JUCERPROJECT id="vpXkaU" name="SMPLComp" projectType="audioplug" jucerVersion="5.4.7"
               pluginFormats="buildAU,buildAUv3,buildVST3" cppLanguageStandard="latest">
   <MAINGROUP id="LEzWVi" name="SMPLComp">
+    <GROUP id="{CBA9D528-8C8E-0BF8-60FE-7D672F6D8325}" name="Drawables">
+      <FILE id="Ey0ynN" name="power_white.svg" compile="0" resource="1" file="Drawables/power_white.svg"/>
+    </GROUP>
     <GROUP id="{85ABA220-5DDF-78C0-699F-59C19B48E4B3}" name="Fonts">
       <FILE id="Mpl2lG" name="Roboto-Bold.ttf" compile="0" resource="1" file="Fonts/Roboto-Bold.ttf"/>
       <FILE id="kTgHzN" name="Roboto-Light.ttf" compile="0" resource="1"

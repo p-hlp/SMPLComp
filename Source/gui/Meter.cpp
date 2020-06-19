@@ -67,9 +67,7 @@ void Meter::modeBoxChanged()
 void Meter::update(const float& val)
 {
 	if (val != valueInDecibel)
-	{
 		needle.update(val);
-	}
 }
 
 int Meter::getMode() {

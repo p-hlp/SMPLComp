@@ -2,7 +2,6 @@
 #include "LevelDetector.h"
 #include "GainComputer.h"
 #include "../JuceLibraryCode/JuceHeader.h"
-#include "DelayLine.h"
 
 /* Compressor-Class:
  * The circruit is modeled after the "ideal" VCA-Compressor
@@ -72,7 +71,6 @@ private:
 
     LevelDetector ballistics;
     GainComputer gainComputer;
-    DelayLine delay;
 
     float input{ 0.0f };
     float prevInput{ 0.0f };

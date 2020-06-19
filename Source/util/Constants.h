@@ -19,7 +19,7 @@ namespace Constants
         constexpr uint32_t gd_DarkGreyEnd{ 0xff464646 };
 
         //Misc
-        constexpr uint32_t statusOutline{ 0xff00838f };
+        constexpr uint32_t statusOutline{ 0xfffb8c00 };
         constexpr uint32_t knobShadow{ 0xff424242 };
     }
 
