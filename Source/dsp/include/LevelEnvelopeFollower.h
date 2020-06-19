@@ -21,39 +21,38 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 class LevelEnvelopeFollower
 {
 public:
-	LevelEnvelopeFollower() = default;
+    LevelEnvelopeFollower() = default;
 
-	// Prepares envelope follower with given sample rate and recalculates decayInSamples
-	// aswell as the peak/rms coefficient
-	void prepare(const double& fs);
+    // Prepares envelope follower with given sample rate and recalculates decayInSamples
+    // aswell as the peak/rms coefficient
+    void prepare(const double& fs);
 
-	// Set peak decay
-	void setPeakDecay(float dc);
+    // Set peak decay
+    void setPeakDecay(float dc);
 
-	// Set rms decay
-	void setRmsDecay(float dc);
+    // Set rms decay
+    void setRmsDecay(float dc);
 
-	// Updates peak envelope follower from given audio buffer
-	void updatePeak(const float* const* channelData, int numChannels, int numSamples);
+    // Updates peak envelope follower from given audio buffer
+    void updatePeak(const float* const* channelData, int numChannels, int numSamples);
 
-	// Updates rms envelope follower from given audio buffer
-	void updateRMS(const float* const* channelData, int numChannels, int numSamples);
+    // Updates rms envelope follower from given audio buffer
+    void updateRMS(const float* const* channelData, int numChannels, int numSamples);
 
-	// Gets current peak, call after updatePeak
-	float getPeak();
+    // Gets current peak, call after updatePeak
+    float getPeak();
 
-	// Gets current rms, vall after updateRMS
-	float getRMS();
+    // Gets current rms, vall after updateRMS
+    float getRMS();
 
 private:
-	float currMaxPeak{ 0.0f };
-	float currMaxRMS{ 0.0f };
-	float peakDecay{ 0.99992f };
-    float rmsDecay{ 0.95f };
-	float peakDecayInSeconds{ 0.5f };
-    float rmsDecayInSeconds{ 0.0f };
-	int peakDecayInSamples{ 0 };
-    int rmsDecayInSamples{ 0 };
-	double sampleRate{ 0.0f };
+    float currMaxPeak{0.0f};
+    float currMaxRMS{0.0f};
+    float peakDecay{0.99992f};
+    float rmsDecay{0.95f};
+    float peakDecayInSeconds{0.5f};
+    float rmsDecayInSeconds{0.0f};
+    int peakDecayInSamples{0};
+    int rmsDecayInSamples{0};
+    double sampleRate{0.0f};
 };
-

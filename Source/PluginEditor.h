@@ -22,14 +22,14 @@
 //==============================================================================
 /**
 */
-class SmplcompAudioProcessorEditor  : public AudioProcessorEditor, Timer
+class SmplcompAudioProcessorEditor : public AudioProcessorEditor, Timer
 {
 public:
-    SmplcompAudioProcessorEditor (SmplcompAudioProcessor&, AudioProcessorValueTreeState&);
+    SmplcompAudioProcessorEditor(SmplcompAudioProcessor&, AudioProcessorValueTreeState&);
     ~SmplcompAudioProcessorEditor();
 
     //==============================================================================
-    void paint (Graphics&) override;
+    void paint(Graphics&) override;
     void resized() override;
     void timerCallback() override;
     void initWidgets();
@@ -54,5 +54,5 @@ private:
     LabeledSlider attackLSlider;
     LabeledSlider releaseLSlider;
     LabeledSlider mixLSlider;
-    JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (SmplcompAudioProcessorEditor)
+    JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(SmplcompAudioProcessorEditor)
 };

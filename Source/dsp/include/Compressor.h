@@ -15,7 +15,7 @@ GNU General Public License for more details.
 You should have received a copy of the GNU General Public License
 along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
-﻿#pragma once
+#pragma once
 #include "LevelDetector.h"
 #include "GainComputer.h"
 #include "../JuceLibraryCode/JuceHeader.h"
@@ -80,19 +80,19 @@ private:
     inline void applyInputGain(AudioBuffer<float>&, int);
 
     //Directly initialize process spec to avoid debugging problems
-    ProcessSpec procSpec{ -1, 0, 0 };
+    ProcessSpec procSpec{-1, 0, 0};
 
     AudioBuffer<float> originalSignal;
     std::vector<float> sidechainSignal;
-    float* rawSidechainSignal{ nullptr };
+    float* rawSidechainSignal{nullptr};
 
     LevelDetector ballistics;
     GainComputer gainComputer;
 
-    float input{ 0.0f };
-    float prevInput{ 0.0f };
-    float makeup{ 0.0f };
-    bool bypassed{ false };
-    float mix{ 1.0f };
-    float maxGainReduction{ 0.0f };
+    float input{0.0f};
+    float prevInput{0.0f};
+    float makeup{0.0f};
+    bool bypassed{false};
+    float mix{1.0f};
+    float maxGainReduction{0.0f};
 };

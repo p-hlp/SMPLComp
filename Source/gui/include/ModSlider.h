@@ -23,41 +23,44 @@ class ModSlider : public Slider
 public:
 
 
-	ModSlider(Label* l) : label(l), isModifiable(false) {}
-	~ModSlider() { label = nullptr; }
+    ModSlider(Label* l) : label(l), isModifiable(false)
+    {
+    }
 
-	void mouseDown(const MouseEvent& e) override
-	{
-		const ModifierKeys modifiers = ModifierKeys::getCurrentModifiersRealtime();
-		if (isModifiable && modifiers.isPopupMenu())
-		{
-			if (isEnabled() && label->isEnabled())
-			{
-				setEnabled(false);
-				label->setEnabled(false);
-			}
-			else
-			{
-				setEnabled(true);
-				label->setEnabled(true);
-			}
-		}
-		else
-			Slider::mouseDown(e);
-	}
+    ~ModSlider() { label = nullptr; }
 
-	void setHasModifiers(bool mod)
-	{
-		isModifiable = mod;
-	}
+    void mouseDown(const MouseEvent& e) override
+    {
+        const ModifierKeys modifiers = ModifierKeys::getCurrentModifiersRealtime();
+        if (isModifiable && modifiers.isPopupMenu())
+        {
+            if (isEnabled() && label->isEnabled())
+            {
+                setEnabled(false);
+                label->setEnabled(false);
+            }
+            else
+            {
+                setEnabled(true);
+                label->setEnabled(true);
+            }
+        }
+        else
+            Slider::mouseDown(e);
+    }
 
-	bool hasModifier() const
-	{
-		return isModifiable;
-	}
+    void setHasModifiers(bool mod)
+    {
+        isModifiable = mod;
+    }
+
+    bool hasModifier() const
+    {
+        return isModifiable;
+    }
 
 
 private:
-	Label* label;
-	bool isModifiable;
+    Label* label;
+    bool isModifiable;
 };

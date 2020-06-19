@@ -61,10 +61,10 @@ public:
     void applyBallistics(float*, int);
 
 private:
-    double attackTimeInSeconds{ 0.01 }, alphaAttack{ 0.0 };
-    double releaseTimeInSeconds{ 0.14 }, alphaRelease{ 0.0 };
-    double state01{ 0.0 }, state02{ 0.0 };
-    double sampleRate{ 0.0 };
-    bool autoAttack{ false };
-    bool autoRelease{ false };
+    double attackTimeInSeconds{0.01}, alphaAttack{0.0};
+    double releaseTimeInSeconds{0.14}, alphaRelease{0.0};
+    double state01{0.0}, state02{0.0};
+    double sampleRate{0.0};
+    bool autoAttack{false};
+    bool autoRelease{false};
 };

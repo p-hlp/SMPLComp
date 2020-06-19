@@ -42,8 +42,8 @@ public:
     double getState();
 
 private:
-    double a1{ 1.0 }, b1{ 0.0 };
-    double state{ 0.0 };
-    double sampleRate{ 0.0 };
-    bool first{ true };
+    double a1{1.0}, b1{0.0};
+    double state{0.0};
+    double sampleRate{0.0};
+    bool first{true};
 };

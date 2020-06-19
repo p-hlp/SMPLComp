@@ -14,14 +14,14 @@
 //==============================================================================
 SmplcompAudioProcessor::SmplcompAudioProcessor()
 #ifndef JucePlugin_PreferredChannelConfigurations
-     : AudioProcessor (BusesProperties()
-                     #if ! JucePlugin_IsMidiEffect
-                      #if ! JucePlugin_IsSynth
-                       .withInput  ("Input",  AudioChannelSet::stereo(), true)
-                      #endif
-                       .withOutput ("Output", AudioChannelSet::stereo(), true)
-                     #endif
-                       ), parameters(*this, nullptr, "PARAMETERS", createParameterLayout())
+    : AudioProcessor(BusesProperties()
+#if ! JucePlugin_IsMidiEffect
+#if ! JucePlugin_IsSynth
+          .withInput("Input", AudioChannelSet::stereo(), true)
+#endif
+          .withOutput("Output", AudioChannelSet::stereo(), true)
+#endif
+      ), parameters(*this, nullptr, "PARAMETERS", createParameterLayout())
 #endif
 {
     //Add parameter listener
@@ -51,29 +51,29 @@ const String SmplcompAudioProcessor::getName() const
 
 bool SmplcompAudioProcessor::acceptsMidi() const
 {
-   #if JucePlugin_WantsMidiInput
+#if JucePlugin_WantsMidiInput
     return true;
-   #else
+#else
     return false;
-   #endif
+#endif
 }
 
 bool SmplcompAudioProcessor::producesMidi() const
 {
-   #if JucePlugin_ProducesMidiOutput
+#if JucePlugin_ProducesMidiOutput
     return true;
-   #else
+#else
     return false;
-   #endif
+#endif
 }
 
 bool SmplcompAudioProcessor::isMidiEffect() const
 {
-   #if JucePlugin_IsMidiEffect
+#if JucePlugin_IsMidiEffect
     return true;
-   #else
+#else
     return false;
-   #endif
+#endif
 }
 
 double SmplcompAudioProcessor::getTailLengthSeconds() const
@@ -83,8 +83,8 @@ double SmplcompAudioProcessor::getTailLengthSeconds() const
 
 int SmplcompAudioProcessor::getNumPrograms()
 {
-    return 1;   // NB: some hosts don't cope very well if you tell them there are 0 programs,
-                // so this should be at least 1, even if you're not really implementing programs.
+    return 1; // NB: some hosts don't cope very well if you tell them there are 0 programs,
+    // so this should be at least 1, even if you're not really implementing programs.
 }
 
 int SmplcompAudioProcessor::getCurrentProgram()
@@ -92,24 +92,24 @@ int SmplcompAudioProcessor::getCurrentProgram()
     return 0;
 }
 
-void SmplcompAudioProcessor::setCurrentProgram (int index)
+void SmplcompAudioProcessor::setCurrentProgram(int index)
 {
 }
 
-const String SmplcompAudioProcessor::getProgramName (int index)
+const String SmplcompAudioProcessor::getProgramName(int index)
 {
     return {};
 }
 
-void SmplcompAudioProcessor::changeProgramName (int index, const String& newName)
+void SmplcompAudioProcessor::changeProgramName(int index, const String& newName)
 {
 }
 
 //==============================================================================
-void SmplcompAudioProcessor::prepareToPlay (double sampleRate, int samplesPerBlock)
+void SmplcompAudioProcessor::prepareToPlay(double sampleRate, int samplesPerBlock)
 {
     // Prepare dsp classes
-    compressor.prepare({ sampleRate, static_cast<uint32>(samplesPerBlock), 2 });
+    compressor.prepare({sampleRate, static_cast<uint32>(samplesPerBlock), 2});
     inLevelFollower.prepare(sampleRate);
     outLevelFollower.prepare(sampleRate);
 
@@ -125,41 +125,41 @@ void SmplcompAudioProcessor::releaseResources()
 }
 
 #ifndef JucePlugin_PreferredChannelConfigurations
-bool SmplcompAudioProcessor::isBusesLayoutSupported (const BusesLayout& layouts) const
+bool SmplcompAudioProcessor::isBusesLayoutSupported(const BusesLayout& layouts) const
 {
-  #if JucePlugin_IsMidiEffect
+#if JucePlugin_IsMidiEffect
     ignoreUnused (layouts);
     return true;
-  #else
+#else
     // This is the place where you check if the layout is supported.
     // In this template code we only support mono or stereo.
     if (layouts.getMainOutputChannelSet() != AudioChannelSet::mono()
-     && layouts.getMainOutputChannelSet() != AudioChannelSet::stereo())
+        && layouts.getMainOutputChannelSet() != AudioChannelSet::stereo())
         return false;
 
     // This checks if the input layout matches the output layout
-   #if ! JucePlugin_IsSynth
+#if ! JucePlugin_IsSynth
     if (layouts.getMainOutputChannelSet() != layouts.getMainInputChannelSet())
         return false;
-   #endif
+#endif
 
     return true;
-  #endif
+#endif
 }
 #endif
 
-void SmplcompAudioProcessor::processBlock (AudioBuffer<float>& buffer, MidiBuffer& midiMessages)
+void SmplcompAudioProcessor::processBlock(AudioBuffer<float>& buffer, MidiBuffer& midiMessages)
 {
     ScopedNoDenormals noDenormals;
-    auto totalNumInputChannels  = getTotalNumInputChannels();
+    auto totalNumInputChannels = getTotalNumInputChannels();
     auto totalNumOutputChannels = getTotalNumOutputChannels();
     const auto numSamples = buffer.getNumSamples();
 
     for (auto i = totalNumInputChannels; i < totalNumOutputChannels; ++i)
-        buffer.clear (i, 0, buffer.getNumSamples());
+        buffer.clear(i, 0, buffer.getNumSamples());
 
     //Update input peak metering
-    inLevelFollower.updatePeak(buffer.getArrayOfReadPointers(), totalNumInputChannels, numSamples);;
+    inLevelFollower.updatePeak(buffer.getArrayOfReadPointers(), totalNumInputChannels, numSamples);
     currentInput.set(Decibels::gainToDecibels(inLevelFollower.getPeak()));
 
     // Do compressor processing
@@ -181,18 +181,18 @@ bool SmplcompAudioProcessor::hasEditor() const
 
 AudioProcessorEditor* SmplcompAudioProcessor::createEditor()
 {
-    return new SmplcompAudioProcessorEditor (*this, parameters);
+    return new SmplcompAudioProcessorEditor(*this, parameters);
 }
 
 //==============================================================================
-void SmplcompAudioProcessor::getStateInformation (MemoryBlock& destData)
+void SmplcompAudioProcessor::getStateInformation(MemoryBlock& destData)
 {
     // You should use this method to store your parameters in the memory block.
     // You could do that either as raw data, or use the XML or ValueTree classes
     // as intermediaries to make it easy to save and load complex data.
 }
 
-void SmplcompAudioProcessor::setStateInformation (const void* data, int sizeInBytes)
+void SmplcompAudioProcessor::setStateInformation(const void* data, int sizeInBytes)
 {
     // You should use this method to restore your parameters from this memory block,
     // whose contents will have been created by the getStateInformation() call.
@@ -224,103 +224,103 @@ AudioProcessorValueTreeState::ParameterLayout SmplcompAudioProcessor::createPara
     params.push_back(std::make_unique<AudioParameterBool>("power", "Power", true));
 
     params.push_back(std::make_unique<AudioParameterFloat>("inputgain", "Input",
-        NormalisableRange<float>(
-            Constants::Parameter::inputStart,
-            Constants::Parameter::inputEnd,
-            Constants::Parameter::inputInterval), 0.0f,
-        String(),
-        AudioProcessorParameter::genericParameter,
-        [](float value, float)
-        {
-            return String(value, 1) + " dB";
-        }));
+                                                           NormalisableRange<float>(
+                                                               Constants::Parameter::inputStart,
+                                                               Constants::Parameter::inputEnd,
+                                                               Constants::Parameter::inputInterval), 0.0f,
+                                                           String(),
+                                                           AudioProcessorParameter::genericParameter,
+                                                           [](float value, float)
+                                                           {
+                                                               return String(value, 1) + " dB";
+                                                           }));
 
 
     params.push_back(std::make_unique<AudioParameterFloat>("threshold", "Tresh",
-        NormalisableRange<float>(
-            Constants::Parameter::thresholdStart,
-            Constants::Parameter::thresholdEnd,
-            Constants::Parameter::thresholdInterval), -10.0f,
-        String(), AudioProcessorParameter::genericParameter,
-        [](float value, float maxStrLen)
-        {
-            return String(value, 1) + " dB";
-        }));
+                                                           NormalisableRange<float>(
+                                                               Constants::Parameter::thresholdStart,
+                                                               Constants::Parameter::thresholdEnd,
+                                                               Constants::Parameter::thresholdInterval), -10.0f,
+                                                           String(), AudioProcessorParameter::genericParameter,
+                                                           [](float value, float maxStrLen)
+                                                           {
+                                                               return String(value, 1) + " dB";
+                                                           }));
 
     params.push_back(std::make_unique<AudioParameterFloat>("ratio", "Ratio",
-        NormalisableRange<float>(
-            Constants::Parameter::ratioStart,
-            Constants::Parameter::ratioEnd,
-            Constants::Parameter::ratioInterval, 0.5f), 2.0f,
-        String(), AudioProcessorParameter::genericParameter,
-        [](float value, float)
-        {
-            if (value > 23.9f)return String("Infinity") + ":1";
-            return String(value, 1) + ":1";
-        }));
+                                                           NormalisableRange<float>(
+                                                               Constants::Parameter::ratioStart,
+                                                               Constants::Parameter::ratioEnd,
+                                                               Constants::Parameter::ratioInterval, 0.5f), 2.0f,
+                                                           String(), AudioProcessorParameter::genericParameter,
+                                                           [](float value, float)
+                                                           {
+                                                               if (value > 23.9f)return String("Infinity") + ":1";
+                                                               return String(value, 1) + ":1";
+                                                           }));
 
     params.push_back(std::make_unique<AudioParameterFloat>("knee", "Knee",
-        NormalisableRange<float>(
-            Constants::Parameter::kneeStart,
-            Constants::Parameter::kneeEnd,
-            Constants::Parameter::kneeInterval),
-        6.0f, String(), AudioProcessorParameter::genericParameter,
-        [](float value, float)
-        {
-            return String(value, 1) + " dB";
-        }));
+                                                           NormalisableRange<float>(
+                                                               Constants::Parameter::kneeStart,
+                                                               Constants::Parameter::kneeEnd,
+                                                               Constants::Parameter::kneeInterval),
+                                                           6.0f, String(), AudioProcessorParameter::genericParameter,
+                                                           [](float value, float)
+                                                           {
+                                                               return String(value, 1) + " dB";
+                                                           }));
 
     params.push_back(std::make_unique<AudioParameterFloat>("attack", "Attack",
-        NormalisableRange<float>(
-            Constants::Parameter::attackStart,
-            Constants::Parameter::attackEnd,
-            Constants::Parameter::attackInterval, 0.5f), 2.0f,
-        "ms",
-        AudioProcessorParameter::genericParameter,
-        [](float value, float)
-        {
-            if (value == 100.0f) return String(value, 0) + " ms";
-            return String(value, 2) + " ms";
-        }));
+                                                           NormalisableRange<float>(
+                                                               Constants::Parameter::attackStart,
+                                                               Constants::Parameter::attackEnd,
+                                                               Constants::Parameter::attackInterval, 0.5f), 2.0f,
+                                                           "ms",
+                                                           AudioProcessorParameter::genericParameter,
+                                                           [](float value, float)
+                                                           {
+                                                               if (value == 100.0f) return String(value, 0) + " ms";
+                                                               return String(value, 2) + " ms";
+                                                           }));
 
     params.push_back(std::make_unique<AudioParameterFloat>("release", "Release",
-        NormalisableRange<float>(
-            Constants::Parameter::releaseStart,
-            Constants::Parameter::releaseEnd,
-            Constants::Parameter::releaseInterval, 0.35f),
-        140.0f,
-        String(),
-        AudioProcessorParameter::genericParameter,
-        [](float value, float)
-        {
-            if (value <= 100) return String(value, 2) + " ms";
-            if (value >= 1000)
-                return String(value * 0.001f, 2) + " s";
-            return String(value, 1) + " ms";
-        }));
+                                                           NormalisableRange<float>(
+                                                               Constants::Parameter::releaseStart,
+                                                               Constants::Parameter::releaseEnd,
+                                                               Constants::Parameter::releaseInterval, 0.35f),
+                                                           140.0f,
+                                                           String(),
+                                                           AudioProcessorParameter::genericParameter,
+                                                           [](float value, float)
+                                                           {
+                                                               if (value <= 100) return String(value, 2) + " ms";
+                                                               if (value >= 1000)
+                                                                   return String(value * 0.001f, 2) + " s";
+                                                               return String(value, 1) + " ms";
+                                                           }));
 
     params.push_back(std::make_unique<AudioParameterFloat>("makeup", "Makeup",
-        NormalisableRange<float>(
-            Constants::Parameter::makeupStart,
-            Constants::Parameter::makeupEnd,
-            Constants::Parameter::makeupInterval), 0.0f,
-        String(),
-        AudioProcessorParameter::genericParameter,
-        [](float value, float)
-        {
-            return String(value, 1) + " dB ";
-        }));
+                                                           NormalisableRange<float>(
+                                                               Constants::Parameter::makeupStart,
+                                                               Constants::Parameter::makeupEnd,
+                                                               Constants::Parameter::makeupInterval), 0.0f,
+                                                           String(),
+                                                           AudioProcessorParameter::genericParameter,
+                                                           [](float value, float)
+                                                           {
+                                                               return String(value, 1) + " dB ";
+                                                           }));
 
     params.push_back(std::make_unique<AudioParameterFloat>("mix", "Mix",
-        NormalisableRange<float>(
-            Constants::Parameter::mixStart,
-            Constants::Parameter::mixEnd,
-            Constants::Parameter::mixInterval),
-        1.0f, "%", AudioProcessorParameter::genericParameter,
-        [](float value, float)
-        {
-            return String(value * 100.0f, 1) + " %";
-        }));
+                                                           NormalisableRange<float>(
+                                                               Constants::Parameter::mixStart,
+                                                               Constants::Parameter::mixEnd,
+                                                               Constants::Parameter::mixInterval),
+                                                           1.0f, "%", AudioProcessorParameter::genericParameter,
+                                                           [](float value, float)
+                                                           {
+                                                               return String(value * 100.0f, 1) + " %";
+                                                           }));
 
-    return { params.begin(), params.end() };
+    return {params.begin(), params.end()};
 }

@@ -31,8 +31,8 @@ void LevelDetector::setAttack(const double& attack)
 {
     if (attack != attackTimeInSeconds)
     {
-        attackTimeInSeconds = attack;    //Time it takes to reach 1-1/e = 0.63
-        alphaAttack = exp(-1.0 / (sampleRate * attackTimeInSeconds));        //aA = e^(-1/TA*fs)
+        attackTimeInSeconds = attack; //Time it takes to reach 1-1/e = 0.63
+        alphaAttack = exp(-1.0 / (sampleRate * attackTimeInSeconds)); //aA = e^(-1/TA*fs)
     }
 }
 
@@ -40,8 +40,8 @@ void LevelDetector::setRelease(const double& release)
 {
     if (release != releaseTimeInSeconds)
     {
-        releaseTimeInSeconds = release;        //Time it takes to reach 1 - (1-1/e) = 0.37
-        alphaRelease = exp(-1.0 / (sampleRate * releaseTimeInSeconds));    //aR = e^(-1/TR*fs)
+        releaseTimeInSeconds = release; //Time it takes to reach 1 - (1-1/e) = 0.37
+        alphaRelease = exp(-1.0 / (sampleRate * releaseTimeInSeconds)); //aR = e^(-1/TR*fs)
     }
 }
 
@@ -74,7 +74,7 @@ float LevelDetector::processPeakBranched(const float& in)
     else
         state01 = alphaRelease * state01 + (1 - alphaRelease) * in;
 
-    return static_cast<float>(state01);    //y_L
+    return static_cast<float>(state01); //y_L
 }
 
 

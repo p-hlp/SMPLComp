@@ -32,7 +32,8 @@ void Compressor::prepare(const ProcessSpec& ps)
     originalSignal.clear();
 }
 
-void Compressor::setPower(bool newPower) {
+void Compressor::setPower(bool newPower)
+{
     bypassed = newPower;
 }
 
@@ -71,7 +72,8 @@ void Compressor::setMakeup(float makeupGainInDb)
     makeup = makeupGainInDb;
 }
 
-void Compressor::setMix(float newMix) {
+void Compressor::setMix(float newMix)
+{
     mix = newMix;
 }
 
@@ -153,4 +155,3 @@ inline void Compressor::applyInputGain(AudioBuffer<float>& buffer, int numSample
         prevInput = input;
     }
 }
-

@@ -42,7 +42,7 @@ void MeterBackground::paint(Graphics& g)
     const auto bounds = meterArea.toFloat();
     const float centreX = bounds.getX() + bounds.getWidth() * 0.5f;
     const float centreY = bounds.getY() + bounds.getHeight();
-    const float needleLength = jmin(bounds.getWidth() * 0.7f, bounds.getHeight() * 0.7f);;
+    const float needleLength = jmin(bounds.getWidth() * 0.7f, bounds.getHeight() * 0.7f);
 
     g.setColour(backgroundApp);
     g.fillRoundedRectangle(meterArea.toFloat(), 1);
@@ -65,7 +65,8 @@ void MeterBackground::drawIndicators(Graphics& g, float centreX, float centreY, 
 
     for (int i = 0; i < indices; ++i)
     {
-        float mapped = jmap(static_cast<float>(val), static_cast<float>(minValue), static_cast<float>(maxValue), sAngle, eAngle);
+        float mapped = jmap(static_cast<float>(val), static_cast<float>(minValue), static_cast<float>(maxValue), sAngle,
+                            eAngle);
         mapped -= mapped > 2 * MathConstants<float>::pi ? MathConstants<float>::twoPi : 0.0f;
         //calc path head
         const float x2 = centreX + sin(mapped) * length;
@@ -78,16 +79,16 @@ void MeterBackground::drawIndicators(Graphics& g, float centreX, float centreY, 
         const float xCof = nX * 7;
         const float yCof = nY * 7;
 
-        g.drawArrow({ x2, y2, x2 - xCof, y2 - yCof }, 2.0f, 0, 0);
+        g.drawArrow({x2, y2, x2 - xCof, y2 - yCof}, 2.0f, 0, 0);
         //g.drawSingleLineText(String(val), x2-5, y2);
         val += step;
     }
 }
 
-void MeterBackground::setMode(int m) {
+void MeterBackground::setMode(int m)
+{
     minValue = m == 3 ? -30 : -50;
     mode = m;
     //DBG("MeterBG setting mode: " << m << " | minValue: " << minValue);
     repaint();
 }
-
