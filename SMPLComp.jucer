@@ -1,11 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <JUCERPROJECT id="vpXkaU" name="SMPLComp" projectType="audioplug" jucerVersion="5.4.7"
-              pluginFormats="buildAU,buildAUv3,buildVST3" cppLanguageStandard="latest">
+              pluginFormats="buildAU,buildAUv3,buildVST3" cppLanguageStandard="latest"
+              reportAppUsage="0" displaySplashScreen="0">
   <MAINGROUP id="LEzWVi" name="SMPLComp">
-    <GROUP id="{CBA9D528-8C8E-0BF8-60FE-7D672F6D8325}" name="Drawables">
-      <FILE id="Ey0ynN" name="power_white.svg" compile="0" resource="1" file="Drawables/power_white.svg"/>
-    </GROUP>
     <GROUP id="{85ABA220-5DDF-78C0-699F-59C19B48E4B3}" name="Fonts">
       <FILE id="Mpl2lG" name="Roboto-Bold.ttf" compile="0" resource="1" file="Fonts/Roboto-Bold.ttf"/>
       <FILE id="kTgHzN" name="Roboto-Light.ttf" compile="0" resource="1"
@@ -35,7 +33,6 @@
       <GROUP id="{568E9E03-2250-C4A0-AE00-0C5CCCDA100C}" name="dsp">
         <GROUP id="{C9EAC937-D5F3-3F1E-1B3C-69EFC89E0879}" name="include">
           <FILE id="dCqcEI" name="Compressor.h" compile="0" resource="0" file="Source/dsp/include/Compressor.h"/>
-          <FILE id="Pf14HV" name="DelayLine.h" compile="0" resource="0" file="Source/dsp/include/DelayLine.h"/>
           <FILE id="lAzHP1" name="GainComputer.h" compile="0" resource="0" file="Source/dsp/include/GainComputer.h"/>
           <FILE id="RwhYvp" name="LevelDetector.h" compile="0" resource="0" file="Source/dsp/include/LevelDetector.h"/>
           <FILE id="xW1nrY" name="LevelEnvelopeFollower.h" compile="0" resource="0"
@@ -44,7 +41,6 @@
                 file="Source/dsp/include/SmoothingFilter.h"/>
         </GROUP>
         <FILE id="woo4cF" name="Compressor.cpp" compile="1" resource="0" file="Source/dsp/Compressor.cpp"/>
-        <FILE id="ibnJPq" name="DelayLine.cpp" compile="1" resource="0" file="Source/dsp/DelayLine.cpp"/>
         <FILE id="ixV1vF" name="GainComputer.cpp" compile="1" resource="0"
               file="Source/dsp/GainComputer.cpp"/>
         <FILE id="pHgK4L" name="LevelDetector.cpp" compile="1" resource="0"
