@@ -1,7 +1,8 @@
 # SMPLComp - Simple Compressor
 
 ## A simple VST3/AU Compressor Plugin created with [JUCE](https://juce.com/)
-![An image](https://github.com/p-hlp/SMPLComp/blob/master/SMPLComp_Snip.png) <!-- .element height="50%" width="50%" -->
+![](https://github.com/p-hlp/SMPLComp/blob/master/SMPLComp_Snip.png)
+<img src="https://github.com/p-hlp/SMPLComp/blob/master/SMPLComp_Snip.png"  width="50%" height="50%">
 ## Introduction
 This is a simplified version of the CTAGDRC plugin.
 
