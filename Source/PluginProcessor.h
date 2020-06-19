@@ -12,6 +12,9 @@
 
 #include <JuceHeader.h>
 
+#include "dsp/include/Compressor.h"
+#include "dsp/include/LevelEnvelopeFollower.h"
+
 //==============================================================================
 /**
 */
@@ -66,6 +69,9 @@ public:
 private:
     //==============================================================================
     AudioProcessorValueTreeState parameters;
+    Compressor compressor;
+    LevelEnvelopeFollower inLevelFollower;
+    LevelEnvelopeFollower outLevelFollower;
 
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (SmplcompAudioProcessor)
 };

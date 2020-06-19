@@ -38,6 +38,8 @@
           <FILE id="Pf14HV" name="DelayLine.h" compile="0" resource="0" file="Source/dsp/include/DelayLine.h"/>
           <FILE id="lAzHP1" name="GainComputer.h" compile="0" resource="0" file="Source/dsp/include/GainComputer.h"/>
           <FILE id="RwhYvp" name="LevelDetector.h" compile="0" resource="0" file="Source/dsp/include/LevelDetector.h"/>
+          <FILE id="xW1nrY" name="LevelEnvelopeFollower.h" compile="0" resource="0"
+                file="Source/dsp/include/LevelEnvelopeFollower.h"/>
           <FILE id="gtvk7d" name="SmoothingFilter.h" compile="0" resource="0"
                 file="Source/dsp/include/SmoothingFilter.h"/>
         </GROUP>
@@ -47,6 +49,8 @@
               file="Source/dsp/GainComputer.cpp"/>
         <FILE id="pHgK4L" name="LevelDetector.cpp" compile="1" resource="0"
               file="Source/dsp/LevelDetector.cpp"/>
+        <FILE id="qiY31X" name="LevelEnvelopeFollower.cpp" compile="1" resource="0"
+              file="Source/dsp/LevelEnvelopeFollower.cpp"/>
         <FILE id="lHbPgi" name="SmoothingFilter.cpp" compile="1" resource="0"
               file="Source/dsp/SmoothingFilter.cpp"/>
       </GROUP>
