@@ -14,13 +14,13 @@
 //==============================================================================
 SmplcompAudioProcessorEditor::SmplcompAudioProcessorEditor (SmplcompAudioProcessor& p, AudioProcessorValueTreeState& vts)
     : AudioProcessorEditor (&p), processor (p), valueTreeState(vts), backgroundApp(Colour(Constants::Colors::bg_App)), inGainLSlider(this), makeupGainLSlider(this),
-    treshLSlider(this), ratioLSlider(this), kneeLSlider(this), attackLSlider(this), releaseLSlider(this),
+    threshLSlider(this), ratioLSlider(this), kneeLSlider(this), attackLSlider(this), releaseLSlider(this),
     mixLSlider(this), powerButton("powerButton", DrawableButton::ButtonStyle::ImageOnButtonBackground)
 {
     setLookAndFeel(&LAF);
     initWidgets();
-    startTimerHz(60);
     setSize (400, 300);
+	startTimerHz(60);
 }
 
 SmplcompAudioProcessorEditor::~SmplcompAudioProcessorEditor()
@@ -82,7 +82,7 @@ void SmplcompAudioProcessorEditor::resized()
 	botBtnBox.flexWrap = FlexBox::Wrap::noWrap;
 	botBtnBox.flexDirection = FlexBox::Direction::row;
 	botBtnBox.justifyContent = FlexBox::JustifyContent::spaceAround;
-	botBtnBox.items.add(FlexItem(treshLSlider).withFlex(1).withMargin(knobMargin));
+	botBtnBox.items.add(FlexItem(threshLSlider).withFlex(1).withMargin(knobMargin));
 	botBtnBox.items.add(FlexItem(makeupGainLSlider).withFlex(1).withMargin(knobMargin));
 	botBtnBox.performLayout(botBtnArea.toFloat());
 
@@ -101,7 +101,7 @@ void SmplcompAudioProcessorEditor::buttonClicked(Button* b)
 	{
 		inGainLSlider.setEnabled(!inGainLSlider.isEnabled());
 		makeupGainLSlider.setEnabled(!makeupGainLSlider.isEnabled());
-		treshLSlider.setEnabled(!treshLSlider.isEnabled());
+		threshLSlider.setEnabled(!threshLSlider.isEnabled());
 		ratioLSlider.setEnabled(!ratioLSlider.isEnabled());
 		kneeLSlider.setEnabled(!kneeLSlider.isEnabled());
 		attackLSlider.setEnabled(!attackLSlider.isEnabled());
@@ -112,6 +112,24 @@ void SmplcompAudioProcessorEditor::buttonClicked(Button* b)
 
 void SmplcompAudioProcessorEditor::timerCallback()
 {
+	int m = meter.getMode();
+	switch (m)
+	{
+	case Meter::Mode::IN:
+		//DBG("IN: " << processor.currentInput.get());
+		meter.update(processor.currentInput.get());
+		break;
+	case Meter::Mode::OUT:
+		//DBG("OUT: " << processor.currentOutput.get());
+		meter.update(processor.currentOutput.get());
+		break;
+	case Meter::Mode::GR:
+		//DBG("GR: " << processor.gainReduction.get());
+		meter.update(processor.gainReduction.get());
+		break;
+	default:
+		break;
+	}
 }
 
 void SmplcompAudioProcessorEditor::initWidgets()
@@ -124,9 +142,9 @@ void SmplcompAudioProcessorEditor::initWidgets()
 	makeupGainLSlider.reset(valueTreeState, "makeup");
 	makeupGainLSlider.setLabelText("Makeup");
 
-	addAndMakeVisible(treshLSlider);
-	treshLSlider.reset(valueTreeState, "threshold");
-	treshLSlider.setLabelText("Threshold");
+	addAndMakeVisible(threshLSlider);
+	threshLSlider.reset(valueTreeState, "threshold");
+	threshLSlider.setLabelText("Threshold");
 
 	addAndMakeVisible(ratioLSlider);
 	ratioLSlider.reset(valueTreeState, "ratio");

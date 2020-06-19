@@ -26,12 +26,12 @@ public:
 		robotoBold = Typeface::createSystemTypefaceFor(BinaryData::RobotoBold_ttf, BinaryData::RobotoBold_ttfSize);
 
 		backgroundDarkGrey = Colour(Constants::Colors::bg_DarkGrey);
-		backgroundDarkGreyDisabled = Colour::fromRGBA(158, 158, 158, 50);
+		backgroundDarkGreyDisabled = Colour(Constants::Colors::bg_DarkGrey).withAlpha(0.35f);
 		backgroundMidGrey = Colour(Constants::Colors::bg_MidGrey);
 		statusOutline = Colour(Constants::Colors::statusOutline);
-		statusOutlineDisabled = Colour::fromRGBA(0, 131, 143, 50);
+		statusOutlineDisabled = Colour(Constants::Colors::statusOutline).withAlpha(0.35f);
 		gradientDarkGrey = Colour(Constants::Colors::gd_DarktGreyStart);
-		gradientDarkGreyDisabled = Colour::fromRGBA(196, 196, 196, 50);
+		gradientDarkGreyDisabled = Colour(Constants::Colors::gd_DarktGreyStart).withAlpha(0.35f);
 	}
 
 	void drawRotarySlider(Graphics& g, int x, int y, int width, int height, float sliderPosProportional,

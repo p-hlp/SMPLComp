@@ -3,7 +3,7 @@
 #include <cassert>
 #include <cmath>
 
-void SimpleEnvFollower::prepare(const double& fs)
+void LevelEnvelopeFollower::prepare(const double& fs)
 {
 	sampleRate = fs;
 
@@ -14,19 +14,19 @@ void SimpleEnvFollower::prepare(const double& fs)
 	rmsDecay = 1.0f - 1.0f / static_cast<float>(rmsDecayInSamples);
 }
 
-void SimpleEnvFollower::setPeakDecay(float dc)
+void LevelEnvelopeFollower::setPeakDecay(float dc)
 {
 	peakDecayInSeconds = dc;
 	prepare(sampleRate);
 }
 
-void SimpleEnvFollower::setRmsDecay(float dc)
+void LevelEnvelopeFollower::setRmsDecay(float dc)
 {
 	rmsDecayInSeconds = dc;
 	prepare(sampleRate);
 }
 
-void SimpleEnvFollower::updatePeak(const float* const* channelData, int numChannels, int numSamples)
+void LevelEnvelopeFollower::updatePeak(const float* const* channelData, int numChannels, int numSamples)
 {
 	assert(numChannels >= 0 && numSamples >= 0 && channelData != nullptr);
 	if (numChannels > 0 && numSamples > 0)
@@ -49,7 +49,7 @@ void SimpleEnvFollower::updatePeak(const float* const* channelData, int numChann
 	}
 }
 
-void SimpleEnvFollower::updateRMS(const float* const* channelData, int numChannels, int numSamples)
+void LevelEnvelopeFollower::updateRMS(const float* const* channelData, int numChannels, int numSamples)
 {
 	assert(numChannels >= 0 && numSamples >= 0 && channelData != nullptr);
 	if (numChannels > 0 && numSamples > 0)
@@ -72,12 +72,12 @@ void SimpleEnvFollower::updateRMS(const float* const* channelData, int numChanne
 	}
 }
 
-float SimpleEnvFollower::getPeak()
+float LevelEnvelopeFollower::getPeak()
 {
 	return currMaxPeak;
 }
 
-float SimpleEnvFollower::getRMS()
+float LevelEnvelopeFollower::getRMS()
 {
 	return sqrt(currMaxRMS);
 }

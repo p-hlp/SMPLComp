@@ -24,6 +24,17 @@ SmplcompAudioProcessor::SmplcompAudioProcessor()
                        ), parameters(*this, nullptr, "PARAMETERS", createParameterLayout())
 #endif
 {
+    //Add parameter listener
+    parameters.addParameterListener("power", this);
+    parameters.addParameterListener("inputgain", this);
+    parameters.addParameterListener("makeup", this);
+    parameters.addParameterListener("threshold", this);
+    parameters.addParameterListener("ratio", this);
+    parameters.addParameterListener("knee", this);
+    parameters.addParameterListener("attack", this);
+    parameters.addParameterListener("release", this);
+    parameters.addParameterListener("mix", this);
+
     gainReduction.set(0.0f);
     currentInput.set(-std::numeric_limits<float>::infinity());
     currentOutput.set(-std::numeric_limits<float>::infinity());
@@ -148,19 +159,24 @@ void SmplcompAudioProcessor::processBlock (AudioBuffer<float>& buffer, MidiBuffe
     for (auto i = totalNumInputChannels; i < totalNumOutputChannels; ++i)
         buffer.clear (i, 0, buffer.getNumSamples());
 
-    //Update input peak metering
-    inLevelFollower.updatePeak(buffer.getArrayOfReadPointers(), totalNumInputChannels, numSamples);;
-    currentInput.set(Decibels::gainToDecibels(inLevelFollower.getPeak()));
+    if(!bypassed)
+    {
+        //DBG("Power on.");
 
-    // Do compressor processing
-    compressor.process(buffer);
+        //Update input peak metering
+        inLevelFollower.updatePeak(buffer.getArrayOfReadPointers(), totalNumInputChannels, numSamples);;
+        currentInput.set(Decibels::gainToDecibels(inLevelFollower.getPeak()));
 
-    // Update gain reduction metering
-    gainReduction.set(compressor.getMaxGainReduction());
+        // Do compressor processing
+        compressor.process(buffer);
 
-    // Update output peak metering
-    outLevelFollower.updatePeak(buffer.getArrayOfReadPointers(), totalNumInputChannels, numSamples);
-    currentOutput = Decibels::gainToDecibels(outLevelFollower.getPeak());
+        // Update gain reduction metering
+        gainReduction.set(compressor.getMaxGainReduction());
+
+        // Update output peak metering
+        outLevelFollower.updatePeak(buffer.getArrayOfReadPointers(), totalNumInputChannels, numSamples);
+        currentOutput = Decibels::gainToDecibels(outLevelFollower.getPeak());
+    }
 }
 
 //==============================================================================
@@ -198,7 +214,11 @@ AudioProcessor* JUCE_CALLTYPE createPluginFilter()
 void SmplcompAudioProcessor::parameterChanged(const String& parameterID, float newValue)
 {
     if (parameterID == "inputgain") compressor.setInput(newValue);
-    else if (parameterID == "power") compressor.setPower(!static_cast<bool>(newValue));
+    else if (parameterID == "power")
+    {
+        compressor.setPower(!static_cast<bool>(newValue));
+        bypassed = !static_cast<bool>(newValue);
+    }
     else if (parameterID == "threshold") compressor.setThreshold(newValue);
     else if (parameterID == "ratio") compressor.setRatio(newValue);
     else if (parameterID == "knee") compressor.setKnee(newValue);
@@ -211,6 +231,8 @@ void SmplcompAudioProcessor::parameterChanged(const String& parameterID, float n
 AudioProcessorValueTreeState::ParameterLayout SmplcompAudioProcessor::createParameterLayout()
 {
     std::vector<std::unique_ptr<RangedAudioParameter>> params;
+
+    params.push_back(std::make_unique<AudioParameterBool>("power", "Power", true));
 
     params.push_back(std::make_unique<AudioParameterFloat>("inputgain", "Input",
         NormalisableRange<float>(

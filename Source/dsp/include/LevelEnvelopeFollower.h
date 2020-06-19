@@ -1,10 +1,10 @@
 #pragma once
 
 /* Basic envelope-follwer, to track peak & rms signal level with configurable decay time*/
-class SimpleEnvFollower
+class LevelEnvelopeFollower
 {
 public:
-	SimpleEnvFollower() = default;
+	LevelEnvelopeFollower() = default;
 
 	// Prepares envelope follower with given sample rate and recalculates decayInSamples
 	// aswell as the peak/rms coefficient

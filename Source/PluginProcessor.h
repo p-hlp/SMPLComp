@@ -72,6 +72,7 @@ private:
     Compressor compressor;
     LevelEnvelopeFollower inLevelFollower;
     LevelEnvelopeFollower outLevelFollower;
+    bool bypassed{ false };
 
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (SmplcompAudioProcessor)
 };

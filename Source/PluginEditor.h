@@ -49,7 +49,7 @@ private:
     Meter meter;
     LabeledSlider inGainLSlider;
     LabeledSlider makeupGainLSlider;
-    LabeledSlider treshLSlider;
+    LabeledSlider threshLSlider;
     LabeledSlider ratioLSlider;
     LabeledSlider kneeLSlider;
     LabeledSlider attackLSlider;
