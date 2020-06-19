@@ -25,7 +25,6 @@ SmplcompAudioProcessor::SmplcompAudioProcessor()
 #endif
 {
     //Add parameter listener
-    parameters.addParameterListener("power", this);
     parameters.addParameterListener("inputgain", this);
     parameters.addParameterListener("makeup", this);
     parameters.addParameterListener("threshold", this);
@@ -159,24 +158,19 @@ void SmplcompAudioProcessor::processBlock (AudioBuffer<float>& buffer, MidiBuffe
     for (auto i = totalNumInputChannels; i < totalNumOutputChannels; ++i)
         buffer.clear (i, 0, buffer.getNumSamples());
 
-    if(!bypassed)
-    {
-        //DBG("Power on.");
+    //Update input peak metering
+    inLevelFollower.updatePeak(buffer.getArrayOfReadPointers(), totalNumInputChannels, numSamples);;
+    currentInput.set(Decibels::gainToDecibels(inLevelFollower.getPeak()));
 
-        //Update input peak metering
-        inLevelFollower.updatePeak(buffer.getArrayOfReadPointers(), totalNumInputChannels, numSamples);;
-        currentInput.set(Decibels::gainToDecibels(inLevelFollower.getPeak()));
+    // Do compressor processing
+    compressor.process(buffer);
 
-        // Do compressor processing
-        compressor.process(buffer);
+    // Update gain reduction metering
+    gainReduction.set(compressor.getMaxGainReduction());
 
-        // Update gain reduction metering
-        gainReduction.set(compressor.getMaxGainReduction());
-
-        // Update output peak metering
-        outLevelFollower.updatePeak(buffer.getArrayOfReadPointers(), totalNumInputChannels, numSamples);
-        currentOutput = Decibels::gainToDecibels(outLevelFollower.getPeak());
-    }
+    // Update output peak metering
+    outLevelFollower.updatePeak(buffer.getArrayOfReadPointers(), totalNumInputChannels, numSamples);
+    currentOutput = Decibels::gainToDecibels(outLevelFollower.getPeak());
 }
 
 //==============================================================================
@@ -214,11 +208,6 @@ AudioProcessor* JUCE_CALLTYPE createPluginFilter()
 void SmplcompAudioProcessor::parameterChanged(const String& parameterID, float newValue)
 {
     if (parameterID == "inputgain") compressor.setInput(newValue);
-    else if (parameterID == "power")
-    {
-        compressor.setPower(!static_cast<bool>(newValue));
-        bypassed = !static_cast<bool>(newValue);
-    }
     else if (parameterID == "threshold") compressor.setThreshold(newValue);
     else if (parameterID == "ratio") compressor.setRatio(newValue);
     else if (parameterID == "knee") compressor.setKnee(newValue);

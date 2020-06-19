@@ -53,7 +53,7 @@ public:
 		const float bedThickness = 2.0f;
 		const float bedOutline = 1.4f;
 		const float statusOutlineThickness = 2.5f;
-		const float extraMargin = 1.0f;
+		const float extraMargin = 2.0f;
 
 		const float pointerThickness = 3.0f;
 		const float pointerLength = (radius - extraMargin - statusOutlineThickness - bedOutline - bedThickness - 1.0f) *

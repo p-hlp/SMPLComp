@@ -22,7 +22,7 @@
 //==============================================================================
 /**
 */
-class SmplcompAudioProcessorEditor  : public AudioProcessorEditor, public Button::Listener, Timer
+class SmplcompAudioProcessorEditor  : public AudioProcessorEditor, Timer
 {
 public:
     SmplcompAudioProcessorEditor (SmplcompAudioProcessor&, AudioProcessorValueTreeState&);
@@ -31,7 +31,6 @@ public:
     //==============================================================================
     void paint (Graphics&) override;
     void resized() override;
-    void buttonClicked(Button*) override;
     void timerCallback() override;
     void initWidgets();
 private:
@@ -55,8 +54,5 @@ private:
     LabeledSlider attackLSlider;
     LabeledSlider releaseLSlider;
     LabeledSlider mixLSlider;
-    DrawableButton powerButton;
-
-    std::unique_ptr<AudioProcessorValueTreeState::ButtonAttachment> powerAttachment;
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (SmplcompAudioProcessorEditor)
 };

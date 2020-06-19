@@ -15,11 +15,11 @@
 SmplcompAudioProcessorEditor::SmplcompAudioProcessorEditor (SmplcompAudioProcessor& p, AudioProcessorValueTreeState& vts)
     : AudioProcessorEditor (&p), processor (p), valueTreeState(vts), backgroundApp(Colour(Constants::Colors::bg_App)), inGainLSlider(this), makeupGainLSlider(this),
     threshLSlider(this), ratioLSlider(this), kneeLSlider(this), attackLSlider(this), releaseLSlider(this),
-    mixLSlider(this), powerButton("powerButton", DrawableButton::ButtonStyle::ImageOnButtonBackground)
+    mixLSlider(this)
 {
     setLookAndFeel(&LAF);
     initWidgets();
-    setSize (400, 300);
+    setSize (400, 260);
 	startTimerHz(60);
 }
 
@@ -39,26 +39,16 @@ void SmplcompAudioProcessorEditor::resized()
 {
 	auto area = getLocalBounds().reduced(Constants::Margins::big);
 
-	const auto headerHeight = area.getHeight() / 10;
 	const auto btnAreaWidth = area.getWidth() / 5;
 	const auto btnBotHeight = area.getHeight() / 3;
 
-	auto header = area.removeFromTop(headerHeight).reduced(Constants::Margins::small);
 	auto lBtnArea = area.removeFromLeft(btnAreaWidth).reduced(Constants::Margins::small);
 	auto rBtnArea = area.removeFromRight(btnAreaWidth).reduced(Constants::Margins::small);
 	auto botBtnArea = area.removeFromBottom(btnBotHeight).reduced(Constants::Margins::medium);
 
-	const FlexItem::Margin knobMargin = FlexItem::Margin(Constants::Margins::medium);
-	const FlexItem::Margin knobMarginSmall = FlexItem::Margin(Constants::Margins::big);
-	const FlexItem::Margin buttonMargin = FlexItem::Margin(Constants::Margins::small, Constants::Margins::big,
-		Constants::Margins::small,
-		Constants::Margins::big);
-	FlexBox headerBox;
-	headerBox.flexWrap = FlexBox::Wrap::noWrap;
-	headerBox.flexDirection = FlexBox::Direction::row;
-	headerBox.justifyContent = FlexBox::JustifyContent::spaceAround;
-	headerBox.items.add(FlexItem(powerButton).withFlex(1).withMargin(buttonMargin));
-	headerBox.performLayout(header.toFloat());
+	const FlexItem::Margin knobMargin = FlexItem::Margin(Constants::Margins::small);
+	const FlexItem::Margin knobMarginSmall = FlexItem::Margin(Constants::Margins::medium);
+
 
 	FlexBox leftBtnBox;
 	leftBtnBox.flexWrap = FlexBox::Wrap::noWrap;
@@ -82,8 +72,8 @@ void SmplcompAudioProcessorEditor::resized()
 	botBtnBox.flexWrap = FlexBox::Wrap::noWrap;
 	botBtnBox.flexDirection = FlexBox::Direction::row;
 	botBtnBox.justifyContent = FlexBox::JustifyContent::spaceAround;
-	botBtnBox.items.add(FlexItem(threshLSlider).withFlex(1).withMargin(knobMargin));
-	botBtnBox.items.add(FlexItem(makeupGainLSlider).withFlex(1).withMargin(knobMargin));
+	botBtnBox.items.add(FlexItem(threshLSlider).withFlex(1));
+	botBtnBox.items.add(FlexItem(makeupGainLSlider).withFlex(1));
 	botBtnBox.performLayout(botBtnArea.toFloat());
 
 	FlexBox meterBox;
@@ -93,22 +83,6 @@ void SmplcompAudioProcessorEditor::resized()
 	meterBox.performLayout(area.toFloat());
 }
 
-
-void SmplcompAudioProcessorEditor::buttonClicked(Button* b)
-{
-	// Disable UI when power turned off
-	if (b == &powerButton)
-	{
-		inGainLSlider.setEnabled(!inGainLSlider.isEnabled());
-		makeupGainLSlider.setEnabled(!makeupGainLSlider.isEnabled());
-		threshLSlider.setEnabled(!threshLSlider.isEnabled());
-		ratioLSlider.setEnabled(!ratioLSlider.isEnabled());
-		kneeLSlider.setEnabled(!kneeLSlider.isEnabled());
-		attackLSlider.setEnabled(!attackLSlider.isEnabled());
-		releaseLSlider.setEnabled(!releaseLSlider.isEnabled());
-		mixLSlider.setEnabled(!mixLSlider.isEnabled());
-	}
-}
 
 void SmplcompAudioProcessorEditor::timerCallback()
 {
@@ -165,15 +139,6 @@ void SmplcompAudioProcessorEditor::initWidgets()
 	addAndMakeVisible(mixLSlider);
 	mixLSlider.reset(valueTreeState, "mix");
 	mixLSlider.setLabelText("Mix");
-
-	addAndMakeVisible(powerButton);
-	powerButton.setColour(TextButton::ColourIds::buttonColourId, Colour::fromRGB(245, 124, 0));
-	powerButton.setImages(
-		Drawable::createFromImageData(BinaryData::power_white_svg, BinaryData::power_white_svgSize).get());
-	powerButton.setClickingTogglesState(true);
-	powerButton.setToggleState(true, dontSendNotification);
-	powerButton.addListener(this);
-	powerAttachment.reset(new AudioProcessorValueTreeState::ButtonAttachment(valueTreeState, "power", powerButton));
 
 	addAndMakeVisible(meter);
 	meter.setMode(Meter::Mode::GR);
