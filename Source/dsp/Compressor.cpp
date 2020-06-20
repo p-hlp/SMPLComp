@@ -120,8 +120,8 @@ void Compressor::process(AudioBuffer<float>& buffer)
         // Smooth attenuation - still logarithmic
         ballistics.applyBallistics(rawSidechainSignal, numSamples);
 
-        // Get max. gain reduction from side chain buffer
-        maxGainReduction = FloatVectorOperations::findMaximum(rawSidechainSignal, numSamples);
+        // Get minimum = max. gain reduction from side chain buffer
+        maxGainReduction = FloatVectorOperations::findMinimum(rawSidechainSignal, numSamples);
 
         // Add makeup gain and convert side-chain to linear domain
         for (int i = 0; i < numSamples; ++i)
