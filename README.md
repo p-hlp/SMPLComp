@@ -1,6 +1,6 @@
 # SMPLComp - Simple Compressor
 
-## A simple VST3/AU Compressor Plugin created with [JUCE](https://juce.com/)
+## A simple audio compressor plugin created with [JUCE](https://juce.com/)
 
 <img src="https://github.com/p-hlp/SMPLComp/blob/master/SMPLComp_Snip.png"  width="60%" height="60%">
 
